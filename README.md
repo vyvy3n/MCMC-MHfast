@@ -10,6 +10,11 @@ The original implementation in Python by the author can be founded [here](https:
 `another-version-plots/logConcave.R`: an early version, with other plots.
 
 `samplers.R`: MCMC sampling methods discussed in the paper, including MRW, ULA, MALA.
+
+`by-stan/`: MCMC for the same posterior estimation problem by stan.
+
+`simple-starts`: simple examples of MH, MCMC algorihtms.
+
 ## Example results
 The examples of results of `main.R` can be found in `eg-results/`;
 
