@@ -13,7 +13,7 @@ The original implementation in Python by the author can be founded [here](https:
 
 `by-stan/`: MCMC for the same posterior estimation problem by stan.
 
-`simple-starts`: simple examples of MH, MCMC algorihtms.
+`simple-starts/`: simple examples of MH, MCMC algorihtms.
 
 ## Example results
 The examples of results of `main.R` can be found in `eg-results/`;
