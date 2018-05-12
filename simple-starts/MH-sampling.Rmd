@@ -1,0 +1,86 @@
+---
+title: "Metropolis-Hastings Sampling"
+author: "Tianwei Yue"
+date: "03/04/2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Example I: Sampling for a Distribution
+
+### Define the Sampling Algorithm
+```{r, echo=TRUE, fig.height = 3.5, fig.width = 5, fig.align = "center"}
+target <- function(x){
+  sin(x)^2*sin(2*x)^2*dnorm(x)}
+metropolis <- function(x, alpha=1, accept=1){
+  y = runif(1, x-alpha, x+alpha)
+  if (runif(1) > target(y)/target(x)){
+    y = x
+    accept = 0} 
+  return(list('y'=y, 'accept'=accept))}
+
+sammple_metropolis <- function(T, sample_fun, alpha=1){
+  x = rep(3.14,T)
+  accept = 0
+  for (t in 2:T) {
+    out  = sample_fun(x[t-1], alpha=alpha)
+    x[t] = out$y
+    accept = accept+out$accept
+  }
+  return(list('chain'=x, 'rate'=accept/T))
+}
+```
+
+
+### e.g. I: alpha=0.1
+```{r, echo=TRUE, fig.height = 3.5, fig.width = 5, fig.align = "center"}
+N = 1e4
+out = sammple_metropolis(N, metropolis, alpha=0.1) 
+# Sampling results histgraph
+hist(as.matrix(out$chain), breaks = 100, freq=FALSE,
+     main=paste('Alpha: 0.1, Accept Rate:', out$rate), ylab='density', xlab='')
+# Approximate original distribution
+d = 0.05
+x = seq(-5, 5, by=d)
+y = x
+for (i in seq(length(x))) {y[i]=target(x[i])}
+y = y/sum(y*d)
+lines(x, y, type='l')
+```
+
+
+### e.g. II: alpha=0.2
+```{r, echo=TRUE, fig.height = 3.5, fig.width = 5, fig.align = "center"}
+out = sammple_metropolis(N, metropolis, alpha=0.2) 
+# Sampling results histgraph
+hist(as.matrix(out$chain), breaks = 100, freq=FALSE,
+     main=paste('Alpha: 0.2, Accept Rate:', out$rate), ylab='density', xlab='')
+# Approximate original distribution
+lines(x, y, type='l')
+```
+
+### e.g. III: alpha=1
+```{r, echo=TRUE, fig.height = 3.5, fig.width = 5, fig.align = "center"}
+out = sammple_metropolis(N, metropolis, alpha=1) 
+# Sampling results histgraph
+hist(as.matrix(out$chain), breaks = 100, freq=FALSE,
+     main=paste('Alpha: 1, Accept Rate:', out$rate), ylab='density', xlab='')
+# Approximate original distribution
+lines(x, y, type='l')
+```
+
+
+### e.g. IV: alpha=10
+```{r, echo=TRUE, fig.height = 3.5, fig.width = 5, fig.align = "center"}
+out = sammple_metropolis(N, metropolis, alpha=10) 
+# Sampling results histgraph
+hist(as.matrix(out$chain), breaks = 100, freq=FALSE,
+     main=paste('Alpha: 10, Accept Rate:', out$rate), ylab='density', xlab='')
+# Approximate original distribution
+lines(x, y, type='l')
+```
+
+## Example II: Posterior Inference
