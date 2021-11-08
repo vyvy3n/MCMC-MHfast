@@ -1,4 +1,4 @@
-# Paper Review & Codes
+# R Re-implementation: Code for Log-concave sampling 
 R implementation of the paper: [Log-concave sampling: Metropolis-Hastings algorithms are fast!](https://arxiv.org/abs/1801.02309)
 
 The original implementation in Python by the author can be founded [here](https://github.com/yuachen/mala_public).
